@@ -1,4 +1,4 @@
-TX2 | Tugas kedua | 15/04/2025 | 09.00
-TX3 | Tugas dulu 0 | 14/03/2025 | 12.00
-TX5 | Tugas 2020 | 11/01/2025 | 11.00
-TX6 | jos | 22/02/2025 | 12.00
+TX1 | Tugas pertama | 01/01/2025 | 07.00
+TX2 | Tugas Kedua | 01/01/2025 | 08.00
+TX3 | Tugas Ketiga | 01/01/2025 | 09.00
+TX4 | Tugas Keempat | 01/01/2025 | 10.00

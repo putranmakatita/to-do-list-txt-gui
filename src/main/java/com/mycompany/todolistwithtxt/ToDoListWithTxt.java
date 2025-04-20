@@ -5,7 +5,6 @@
 package com.mycompany.todolistwithtxt;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,10 +52,8 @@ public class ToDoListWithTxt {
             writer.write("TX" + urutan + " | " + task + " | " + tanggal + " | " + waktu + "\n");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error saat menulis file ke " + e);
-            System.out.println("Error saat menulis file ke " + e);
         }
         JOptionPane.showMessageDialog(null, "Task added: " + task);
-        System.out.println("Task added: " + task);
 
     }
 
@@ -88,7 +85,6 @@ public class ToDoListWithTxt {
                 writer.println(line);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("disini?");
             JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e);
             return false;
         }
@@ -105,7 +101,6 @@ public class ToDoListWithTxt {
         File file = new File("toDoListData.txt");
 
         if (!file.exists()) {
-            System.out.println("Belum ada data tersimpan.");
             return isi;
         }
 
@@ -136,7 +131,7 @@ public class ToDoListWithTxt {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File tidak ditemukan.");
+            JOptionPane.showMessageDialog(null, "File tidak ditemukan.");
         }
 
         return isi;
@@ -198,7 +193,7 @@ public class ToDoListWithTxt {
                 maxIdx = Math.max(maxIdx, idx);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File tidak ditemukan: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "File tidak ditemukan: " + e.getMessage());
         }
 
         return maxIdx + 1;
