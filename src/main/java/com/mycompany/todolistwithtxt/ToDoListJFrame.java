@@ -6,6 +6,7 @@ package com.mycompany.todolistwithtxt;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -39,6 +40,7 @@ public class ToDoListJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated
+    // <editor-fold defaultstate="collapsed" desc="Generated
     // Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -54,6 +56,8 @@ public class ToDoListJFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         tanggalField = new javax.swing.JFormattedTextField();
         waktuField = new javax.swing.JFormattedTextField();
+        searchField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(700, 800));
@@ -97,6 +101,7 @@ public class ToDoListJFrame extends javax.swing.JFrame {
             }
         });
         toDoListTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_NEXT_COLUMN);
+        toDoListTable.getTableHeader().setReorderingAllowed(false);
         toDoListTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 toDoListTablePropertyChange(evt);
@@ -128,42 +133,80 @@ public class ToDoListJFrame extends javax.swing.JFrame {
             }
         });
 
+        searchField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchFieldKeyPressed(evt);
+            }
+
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchFieldKeyReleased(evt);
+            }
+        });
+
+        jLabel6.setText("Search");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(279, 279, 279)
-                                .addComponent(jLabel1))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(addTaskButton, javax.swing.GroupLayout.PREFERRED_SIZE, 181,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 618,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 64,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(3, 3, 3)
-                                .addComponent(newTaskField, javax.swing.GroupLayout.PREFERRED_SIZE, 176,
-                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 73,
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(jPanel1Layout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(279, 279, 279)
+                                                        .addComponent(jLabel1))
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(36, 36, 36)
+                                                        .addComponent(addTaskButton,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 181,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(36, 36, 36)
+                                                        .addComponent(jScrollPane1,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 618,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addGap(36, 36, 36)
+                                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(3, 3, 3)
+                                                        .addComponent(newTaskField,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE, 176,
+                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(26, 26, 26)
+                                                        .addGroup(jPanel1Layout
+                                                                .createParallelGroup(
+                                                                        javax.swing.GroupLayout.Alignment.LEADING)
+                                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                        .addComponent(jLabel5,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                73,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                        .addComponent(waktuField,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                122,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                                                        .addComponent(jLabel4,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                73,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addPreferredGap(
+                                                                                javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                        .addComponent(tanggalField,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE,
+                                                                                133,
+                                                                                javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGroup(jPanel1Layout
+                                                .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 75,
                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(waktuField, javax.swing.GroupLayout.PREFERRED_SIZE, 122,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 73,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(tanggalField, javax.swing.GroupLayout.PREFERRED_SIZE, 133,
-                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))));
+                                                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 106,
+                                                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(26, 26, 26)));
         jPanel1Layout.setVerticalGroup(
                 jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -190,8 +233,13 @@ public class ToDoListJFrame extends javax.swing.JFrame {
                                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel5))
                                 .addGap(18, 18, 18)
-                                .addComponent(addTaskButton)
-                                .addGap(31, 31, 31)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(addTaskButton)
+                                        .addComponent(jLabel6))
+                                .addGap(6, 6, 6)
+                                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE,
+                                        javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 265,
                                         javax.swing.GroupLayout.PREFERRED_SIZE)));
 
@@ -200,6 +248,16 @@ public class ToDoListJFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void searchFieldKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_searchFieldKeyPressed
+
+    }// GEN-LAST:event_searchFieldKeyPressed
+
+    private void searchFieldKeyReleased(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_searchFieldKeyReleased
+        String searchVal = searchField.getText();
+        System.out.println(searchVal);
+        displayTask(searchVal);
+    }// GEN-LAST:event_searchFieldKeyReleased
 
     private void toDoListTablePropertyChange(java.beans.PropertyChangeEvent evt) {// GEN-FIRST:event_toDoListTablePropertyChange
         // TODO add your handling code here:
@@ -314,7 +372,6 @@ public class ToDoListJFrame extends javax.swing.JFrame {
     }// GEN-LAST:event_waktuFieldActionPerformed
 
     private void addTaskButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("anak anjing");
         logic.addTask(newTaskField.getText(), tanggalField.getText(), waktuField.getText());
         displayTask();
         resetForm();
@@ -322,10 +379,16 @@ public class ToDoListJFrame extends javax.swing.JFrame {
     }// GEN-LAST:event_jButton1ActionPerformed
 
     private void displayTask() {
+        displayTask("");
+    }
+
+    private void displayTask(String search) {
         DefaultTableModel model = (DefaultTableModel) toDoListTable.getModel();
         model.setRowCount(0); // Hapus semua baris lama
 
-        Object[][] tasks = logic.getAllTasks(); // Ambil array 2 dimensi
+        ArrayList<Object[]> tasksArr = logic.getAllTasks(search); // Ambil array 2 dimensi
+
+        Object[][] tasks = logic.sortingByTanggal(tasksArr);
 
         for (Object[] row : tasks) {
             model.addRow(row); // Tambahkan ke tabel
@@ -379,9 +442,11 @@ public class ToDoListJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField newTaskField;
+    private javax.swing.JTextField searchField;
     private javax.swing.JFormattedTextField tanggalField;
     private javax.swing.JTable toDoListTable;
     private javax.swing.JFormattedTextField waktuField;

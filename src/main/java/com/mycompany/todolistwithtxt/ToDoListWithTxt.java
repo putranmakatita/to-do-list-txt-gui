@@ -27,8 +27,6 @@ public class ToDoListWithTxt {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     // Konstruktor untuk inisialisasi daftar to do
     public ToDoListWithTxt() {
         scanner = new Scanner(System.in);
@@ -49,12 +47,10 @@ public class ToDoListWithTxt {
             return;
         }
 
-        // String code = generateCode();
-        int code = getLastIndex();
-        // String code = "TX1";
+        int urutan = getLastIndex();
 
         try (FileWriter writer = new FileWriter("toDoListData.txt", true)) {
-            writer.write("TX" + code + " | " + task + " | " + tanggal + " | " + waktu + "\n");
+            writer.write("TX" + urutan + " | " + task + " | " + tanggal + " | " + waktu + "\n");
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error saat menulis file ke " + e);
             System.out.println("Error saat menulis file ke " + e);
@@ -64,149 +60,77 @@ public class ToDoListWithTxt {
 
     }
 
-    public String generateCode() {
-        File file = new File("toDoListData.txt");
-        int i = 0;
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                i++;
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File tidak ditemukan: " + e.getMessage());
-        }
-
-        return "TX" + (i + 1);
-    }
-
     // Fungsi untuk menghapus to do dari daftar (Delete)
     public void deleteTask(String task) {
-        File file = new File("toDoListData.txt");
-        ArrayList<String> lines = new ArrayList<>();
-        Boolean isFound = false;
 
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                if (scanner.nextLine().equals(task)) {
-                    isFound = true;
-                } else {
-                    lines.add(scanner.nextLine());
-                }
-            }
-            System.out.println("Task is not found: " + task);
-        } catch (FileNotFoundException e) {
-            System.out.println("File tidak ditemukan: " + e.getMessage());
-        }
-
-        try (PrintWriter writer = new PrintWriter(file)) {
-            for (String line : lines) {
-                writer.println(line);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Gagal menulis ke file: " + e.getMessage());
-            return;
-        }
-
-        if (isFound) {
-            System.out.println("Task is deleted: " + task);
-        } else {
-            System.out.println("Task is not found: " + task);
-        }
     }
 
-    // Fungsi untuk mencari indeks to do dalam daftar
-    public int findTaskIndex(String task) {
-        File file = new File("toDoListData.txt");
-
-        int idx = 1;
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                if (scanner.nextLine().equals(task)) {
-                    return idx;
-                }
-                idx++;
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File tidak ditemukan: " + e.getMessage());
-        }
-
-        return -1;
+    public ArrayList<Object[]> getAllTasks() {
+        return getAllTasks("");
     }
 
-    // Fungsi untuk menampilkan semua to do dalam daftar (Read all)
-    public void displayTasks() {
-        File file = new File("toDoListData.txt");
-        if (!file.exists()) {
-            JOptionPane.showMessageDialog(null, "Belum ada data tersimpan.");
-            return;
-        }
-        StringBuilder isi = new StringBuilder();
-        int no = 1;
-        try (Scanner fileScanner = new Scanner(file)) {
-            while (fileScanner.hasNextLine()) {
-                isi.append(no + ". " + fileScanner.nextLine()).append("\n");
-                no++;
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("File tidak ditemukan.");
-            return;
-        }
-        System.out.println(isi.toString());
-    }
-
-    // Fungsi untuk menampilkan semua to do dalam daftar (Read all)
-    public Object[][] getAllTasks() {
+    public ArrayList<Object[]> getAllTasks(String search) {
+        ArrayList<Object[]> isi = new ArrayList<>();
         File file = new File("toDoListData.txt");
 
         if (!file.exists()) {
             System.out.println("Belum ada data tersimpan.");
-            return new Object[0][0]; // Kembalikan array kosong
+            return isi;
         }
-
-        ArrayList<Object[]> isi = new ArrayList<>();
 
         try (Scanner fileScanner = new Scanner(file)) {
             while (fileScanner.hasNextLine()) {
                 String taskRecord = fileScanner.nextLine();
-                String[] taskParts = taskRecord.split(" \\| "); // taskParts[1] = tanggal, taskParts[2] = waktu
-                isi.add(new Object[] { 0, taskParts[0], taskParts[1], taskParts[2], taskParts[3] });
+                String[] taskParts = taskRecord.split(" \\| ");
+
+                if (taskParts.length >= 4) {
+                    Object[] task = new Object[] { 0, taskParts[0], taskParts[1], taskParts[2], taskParts[3] };
+
+                    // Jika search kosong, langsung tambahkan semua
+                    if (search.isEmpty()) {
+                        isi.add(task);
+                    } else {
+                        boolean matchFound = false;
+                        for (String part : taskParts) {
+                            if (part.matches("(?i).*" + search + ".*")) { // (?i) = case-insensitive
+                                matchFound = true;
+                                break;
+                            }
+                        }
+
+                        if (matchFound) {
+                            isi.add(task);
+                        }
+                    }
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("File tidak ditemukan.");
-            return new Object[0][0];
         }
 
+        return isi;
+    }
+
+    public Object[][] sortingByTanggal(ArrayList<Object[]> isi) {
         isi.sort((a, b) -> {
             String tanggalA = (String) a[3];
             String tanggalB = (String) b[3];
 
-            // Format pertama: dua digit tahun (yy)
-            DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd/MM/yy");
-            // Format kedua: empat digit tahun (yyyy)
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             LocalDate dateA = null;
             LocalDate dateB = null;
 
-            // Coba parse dengan format pertama (dd/MM/yy)
             try {
-                dateA = LocalDate.parse(tanggalA, formatter1);
-            } catch (DateTimeParseException e1) {
-                try {
-                    dateA = LocalDate.parse(tanggalA, formatter2); // Coba dengan format kedua (dd/MM/yyyy)
-                } catch (DateTimeParseException e2) {
-                    e2.printStackTrace(); // Jika masih gagal, print error untuk debugging
-                }
+                dateA = LocalDate.parse(tanggalA, formatter); // Coba dengan format kedua (dd/MM/yyyy)
+            } catch (DateTimeParseException e2) {
+                e2.printStackTrace(); // Jika masih gagal, print error untuk debugging
             }
 
-            // Coba parse dengan format pertama (dd/MM/yy)
             try {
-                dateB = LocalDate.parse(tanggalB, formatter1);
-            } catch (DateTimeParseException e1) {
-                try {
-                    dateB = LocalDate.parse(tanggalB, formatter2); // Coba dengan format kedua (dd/MM/yyyy)
-                } catch (DateTimeParseException e2) {
-                    e2.printStackTrace(); // Jika masih gagal, print error untuk debugging
-                }
+                dateB = LocalDate.parse(tanggalB, formatter); // Coba dengan format kedua (dd/MM/yyyy)
+            } catch (DateTimeParseException e2) {
+                e2.printStackTrace(); // Jika masih gagal, print error untuk debugging
             }
 
             // Jika kedua tanggal berhasil diparse, lakukan perbandingan
@@ -293,6 +217,5 @@ public class ToDoListWithTxt {
     public static void main(String[] args) {
         ToDoListJFrame myFrame = new ToDoListJFrame();
         myFrame.jalanKan();
-
     }
 }
