@@ -61,8 +61,39 @@ public class ToDoListWithTxt {
     }
 
     // Fungsi untuk menghapus to do dari daftar (Delete)
-    public void deleteTask(String task) {
+    public boolean deleteTask(String code) {
+        File file = new File("toDoListData.txt");
+        ArrayList<String> lines = new ArrayList<>();
 
+        boolean isFound = false;
+
+        try (Scanner fileScanner = new Scanner(file)) {
+            while (fileScanner.hasNextLine()) {
+                String taskRecord = fileScanner.nextLine();
+                String[] taskParts = taskRecord.split(" \\| ");
+                if (taskParts[0].equals(code)) {
+                    isFound = true;
+                } else {
+                    String newLine = code + " | ";
+                    newLine = taskParts[0] + " | " + taskParts[1] + " | " + taskParts[2] + " | " + taskParts[3];
+                    lines.add(newLine);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+
+        try (PrintWriter writer = new PrintWriter(file)) {
+            for (String line : lines) {
+                writer.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("disini?");
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e);
+            return false;
+        }
+
+        return isFound;
     }
 
     public ArrayList<Object[]> getAllTasks() {
@@ -156,18 +187,21 @@ public class ToDoListWithTxt {
     }
 
     public int getLastIndex() {
-        ArrayList<String> tasks = new ArrayList<>();
         File file = new File("toDoListData.txt");
+        int maxIdx = 0;
 
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
-                tasks.add(scanner.nextLine());
+                String line = scanner.nextLine();
+                String[] parts = line.split(" \\| ");
+                int idx = Integer.parseInt(parts[0].split("X")[1]);
+                maxIdx = Math.max(maxIdx, idx);
             }
         } catch (FileNotFoundException e) {
             System.out.println("File tidak ditemukan: " + e.getMessage());
         }
 
-        return tasks.size();
+        return maxIdx + 1;
     }
 
     // Fungsi untuk sunting data (Update)
